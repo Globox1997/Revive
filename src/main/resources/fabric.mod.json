@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "revive",
+  "version": "${version}",
+  "name": "Revive",
+  "description": "Revive your friends when they died",
+  "authors": [
+    "Globox_Z"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "MIT",
+  "icon": "assets/revive/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.revive.ReviveMain"
+    ],
+    "client": [
+      "net.revive.ReviveClient"
+    ],
+    "modmenu": [
+      "net.revive.config.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "revive.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

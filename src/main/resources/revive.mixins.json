@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.revive.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "PlayerEntityMixin",
+    "LivingEntityMixin",
+    "ServerPlayerEntityMixin",
+    "ServerPlayNetworkHandlerMixin",
+    "PlayerManagerMixin",
+    "LivingEntityAccessor"
+  ],
+  "client": [
+    "client.DeathScreenMixin",
+    "client.ClientPlayerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
