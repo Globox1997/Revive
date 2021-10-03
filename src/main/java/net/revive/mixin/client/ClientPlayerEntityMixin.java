@@ -28,9 +28,9 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
         this.deathTime++;
         if (ReviveMain.CONFIG.timer == -1 || (ReviveMain.CONFIG.timer != -1 && ReviveMain.CONFIG.timer > this.deathTime))
             info.cancel();
-        else if (this.deathTime >= 20) {
+        else if (this.deathTime >= 20)
             this.remove(Entity.RemovalReason.KILLED);
-        }
+
     }
 
 }

@@ -6,6 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
+import net.minecraft.particle.ParticleTypes;
 import net.revive.accessor.PlayerEntityAccessor;
 
 public class ReviveClientPacket {
@@ -21,11 +22,13 @@ public class ReviveClientPacket {
                     client.currentScreen.onClose();
                     client.player.deathTime = 0;
                     client.player.hurtTime = 0;
+                    client.player.extinguish();
                 } else {
                     PlayerEntity playerEntity = (PlayerEntity) client.world.getEntityById(entityId);
                     playerEntity.setHealth(healthPoints);
                     playerEntity.deathTime = 0;
                     playerEntity.hurtTime = 0;
+                    playerEntity.extinguish();
                 }
             });
         });
@@ -38,6 +41,9 @@ public class ReviveClientPacket {
         ClientPlayNetworking.registerGlobalReceiver(ReviveServerPacket.REVIVABLE_PACKET, (client, handler, buf, sender) -> {
             boolean canRevive = buf.readBoolean();
             client.execute(() -> {
+                for (int u = 0; u < 30; u++)
+                    client.world.addParticle(ParticleTypes.END_ROD, (double) client.player.getX() - 1.0D + client.world.random.nextFloat() * 2F, client.player.getRandomBodyY(),
+                            (double) client.player.getZ() - 1.0D + client.world.random.nextFloat() * 2F, 0.0D, 0.2D, 0.0D);
                 ((PlayerEntityAccessor) client.player).setCanRevive(canRevive);
             });
         });

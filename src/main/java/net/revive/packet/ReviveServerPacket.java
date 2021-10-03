@@ -27,7 +27,7 @@ public class ReviveServerPacket {
                 ((PlayerEntityAccessor) player).setCanRevive(false);
                 player.deathTime = 0;
                 player.hurtTime = 0;
-
+                player.extinguish();
                 int healthPoints = ReviveMain.CONFIG.reviveHealthPoints;
                 player.setHealth(healthPoints);
                 player.onSpawn();
