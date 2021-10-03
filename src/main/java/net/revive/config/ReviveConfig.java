@@ -11,6 +11,12 @@ public class ReviveConfig implements ConfigData {
     public int timer = -1;
     @Comment("Drops player loot directly")
     public boolean dropLoot = false;
+    @Comment("Drops player inventory items randomly")
+    public boolean dropRandom = false;
+    @Comment("Drops random items when killed by explosion")
+    public boolean dropRandomOnExplosion = true;
+    @Comment("Chance for each inventory item to drop")
+    public float dropChance = 0.3F;
     public int reviveHealthPoints = 2;
 
     public boolean reviveEffects = true;
