@@ -10,9 +10,11 @@
     "text.autoconfig.revive.option.effectSlowness": "Slowness Effect Duration",
     "text.autoconfig.revive.option.effectHunger": "Hunger Effect Duration",
     "text.autoconfig.revive.option.effectWeakness": "Weakness Effect Duration",
+    "text.autoconfig.revive.option.showDeathCoordinates": "Show Death Coordinates",
 
     "text.deathScreen.revive": "Revive",
     "text.deathScreen.timer": "Time: %d",
+    "text.deathScreen.coordinates": "Coordinates: %d, %d, %d",
 
     "item.revive.revive_item": "Revival Star"
 }

@@ -18,7 +18,9 @@ public class ReviveConfig implements ConfigData {
     @Comment("Chance for each inventory item to drop")
     public float dropChance = 0.3F;
     public int reviveHealthPoints = 2;
+    public boolean showDeathCoordinates = true;
 
+    @Comment("Apply bad effects on revival")
     public boolean reviveEffects = true;
     public int effectSlowness = 600;
     public int effectHunger = 300;

@@ -42,6 +42,7 @@ public abstract class DeathScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", shift = Shift.AFTER))
     protected void initMixin(CallbackInfo info) {
+        this.passEvents = true;
         if (!((PlayerEntityAccessor) this.client.player).getDeathReason())
             this.buttons.add((ButtonWidget) this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 4 + 120, 200, 20, new TranslatableText("text.deathScreen.revive"), (button) -> {
                 if (((PlayerEntityAccessor) this.client.player).canRevive() && (ReviveMain.CONFIG.timer == -1 || (ReviveMain.CONFIG.timer != -1 && ReviveMain.CONFIG.timer > this.ticksSinceDeath)))
@@ -61,7 +62,14 @@ public abstract class DeathScreenMixin extends Screen {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/DeathScreen;drawCenteredText(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)V", ordinal = 2))
     private void renderMixin(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo info) {
-        if (ReviveMain.CONFIG.timer != -1 && ReviveMain.CONFIG.timer >= this.ticksSinceDeath && !((PlayerEntityAccessor) this.client.player).getDeathReason())
-            drawCenteredText(matrices, this.textRenderer, new TranslatableText("text.deathScreen.timer", (ReviveMain.CONFIG.timer - this.ticksSinceDeath) / 20), this.width / 2, 115, 16777215);
+        if (this.client.player != null) {
+            if (ReviveMain.CONFIG.timer != -1 && ReviveMain.CONFIG.timer >= this.ticksSinceDeath && !((PlayerEntityAccessor) this.client.player).getDeathReason())
+                drawCenteredText(matrices, this.textRenderer, new TranslatableText("text.deathScreen.timer", (ReviveMain.CONFIG.timer - this.ticksSinceDeath) / 20), this.width / 2, 115, 16777215);
+            // Coordinates
+            if (ReviveMain.CONFIG.showDeathCoordinates)
+                drawCenteredText(matrices, this.textRenderer,
+                        new TranslatableText("text.deathScreen.coordinates", this.client.player.getBlockX(), this.client.player.getBlockY(), this.client.player.getBlockZ()), this.width / 2,
+                        this.height / 4 + 146 + (!((PlayerEntityAccessor) this.client.player).getDeathReason() ? 0 : -24), 16777215);
+        }
     }
 }
