@@ -6,53 +6,58 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-import net.revive.mixin.PlayerInventoryAccessor;
 
 public class PlayerLootScreenHandler extends ScreenHandler {
     private final PlayerInventory lootablePlayerInventory;
 
     public PlayerLootScreenHandler(int syncId, PlayerInventory playerInventory, PlayerInventory otherPlayerInventory) {
-        super(ScreenHandlerType.GENERIC_9X5, syncId);
+        super(ScreenHandlerType.GENERIC_9X4, syncId);
         this.lootablePlayerInventory = otherPlayerInventory;
-
         int m;
         for (m = 0; m < 3; ++m) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(lootablePlayerInventory, l + m * 9 + 9, 8 + l * 18, m * 18));
+                this.addSlot(new Slot(this.lootablePlayerInventory, l + m * 9 + 9, 8 + l * 18, m * 18));
             }
         }
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(lootablePlayerInventory, m, 8 + m * 18, 54));
+            this.addSlot(new Slot(this.lootablePlayerInventory, m, 8 + m * 18, 54));
         }
-        for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(lootablePlayerInventory, m + 36, 8 + m * 18, 72) {
-                @Override
-                public boolean canInsert(ItemStack stack) {
-                    int inventorySize = 0;
-                    for (int i = 0; i < ((PlayerInventoryAccessor) lootablePlayerInventory).getCombinedInventory().size(); i++) {
-                        for (int u = 0; u < ((PlayerInventoryAccessor) lootablePlayerInventory).getCombinedInventory().get(i).size(); u++)
-                            inventorySize++;
-                    }
-                    if (inventorySize <= this.getIndex())
-                        return false;
-                    else
-                        return true;
-                }
+        // Armor slots + offhand slot + other mods slot could get added with GENERIC_9x5
+        // but if more than 4 items would be available 9X5 wouldn't be enough
+        // and mod compatibilities have to get done by hand here at canInsert
 
-                // @Override
-                // public boolean isEnabled() {
-                //     int inventorySize = 0;
-                //     for (int i = 0; i < ((PlayerInventoryAccessor) lootablePlayerInventory).getCombinedInventory().size(); i++) {
-                //         for (int u = 0; u < ((PlayerInventoryAccessor) lootablePlayerInventory).getCombinedInventory().get(i).size(); u++)
-                //             inventorySize++;
-                //     }
-                //     if (inventorySize <= this.getIndex())
-                //         return false;
-                //     else
-                //         return true;
-                // }
-            });
-        }
+        // for (m = 0; m < 9; ++m) {
+        //     this.addSlot(new Slot(this.lootablePlayerInventory, m + 36, 8 + m * 18, 72) {
+        //         @Override
+        //         public boolean canInsert(ItemStack stack) {
+        //             System.out.println(this.getIndex());
+        //             if (lootablePlayerInventory.size() <= this.getIndex())
+        //                 return false;
+        //             else if (this.getIndex() >= 36 && this.getIndex() < 40 && !(stack.getItem() instanceof ArmorItem)
+        //                     || (stack.getItem() instanceof ArmorItem && !canInsertArmorStack(stack, this.getIndex())))
+        //                 return false;
+        //             else if ((this.getIndex() == 41 || this.getIndex() == 42) && !(stack.getItem() instanceof SwordItem))
+        //                 return false;
+        //             else
+        //                 return true;
+        //         }
+
+        //         @Override
+        //         public boolean isEnabled() {
+        //             if (lootablePlayerInventory.size() <= this.getIndex()) {
+        //                 System.out.println("Not enabled");
+        //                 return false;
+        //             } else
+        //                 return true;
+        //         }
+
+        //         @Override
+        //         public boolean canTakeItems(PlayerEntity playerEntity) {
+        //             ItemStack itemStack = this.getStack();
+        //             return !itemStack.isEmpty() && EnchantmentHelper.hasBindingCurse(itemStack) ? false : super.canTakeItems(playerEntity);
+        //         }
+        //     });
+        // }
 
         for (m = 0; m < 3; ++m) {
             for (int l = 0; l < 9; ++l) {
@@ -65,9 +70,48 @@ public class PlayerLootScreenHandler extends ScreenHandler {
 
     }
 
+    // private boolean canInsertArmorStack(ItemStack stack, int slot) {
+    //     switch (slot) {
+    //         case 36:
+    //             return MobEntity.getPreferredEquipmentSlot(stack) == EquipmentSlot.FEET;
+    //         case 37:
+    //             return MobEntity.getPreferredEquipmentSlot(stack) == EquipmentSlot.LEGS;
+    //         case 38:
+    //             return MobEntity.getPreferredEquipmentSlot(stack) == EquipmentSlot.CHEST;
+    //         case 39:
+    //             return MobEntity.getPreferredEquipmentSlot(stack) == EquipmentSlot.HEAD;
+    //         default:
+    //             return false;
+    //     }
+    // }
+
     @Override
     public boolean canUse(PlayerEntity player) {
-        return true;
+        return this.lootablePlayerInventory.player.isDead() && this.lootablePlayerInventory.canPlayerUse(player);
+    }
+
+    @Override
+    public ItemStack transferSlot(PlayerEntity player, int index) {
+        ItemStack itemStack = ItemStack.EMPTY;
+        Slot slot = (Slot) this.slots.get(index);
+        if (slot != null && slot.hasStack()) {
+            ItemStack itemStack2 = slot.getStack();
+            itemStack = itemStack2.copy();
+
+            if (index < this.lootablePlayerInventory.size()) {
+                if (!this.insertItem(itemStack2, this.lootablePlayerInventory.size(), this.slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.insertItem(itemStack2, 0, this.lootablePlayerInventory.size(), false)) {
+                return ItemStack.EMPTY;
+            }
+            if (itemStack2.isEmpty()) {
+                slot.setStack(ItemStack.EMPTY);
+            } else {
+                slot.markDirty();
+            }
+        }
+        return itemStack;
     }
 
 }

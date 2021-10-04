@@ -57,11 +57,11 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-        PlayerEntity playerEntity = (PlayerEntity) (Object) this;
-        if (this.deathTime > 20 && ReviveMain.CONFIG.allowLootablePlayer && !playerEntity.getInventory().isEmpty()) {
+        PlayerEntity otherPlayerEntity = (PlayerEntity) (Object) this;
+        if (this.deathTime > 20 && ReviveMain.CONFIG.allowLootablePlayer) {
             if (!world.isClient) {
                 player.openHandledScreen(
-                        new SimpleNamedScreenHandlerFactory((syncId, inv, p) -> new PlayerLootScreenHandler(syncId, p.getInventory(), playerEntity.getInventory()), playerEntity.getName()));
+                        new SimpleNamedScreenHandlerFactory((syncId, inv, p) -> new PlayerLootScreenHandler(syncId, inv, otherPlayerEntity.getInventory()), otherPlayerEntity.getName()));
             }
             return ActionResult.SUCCESS;
         } else
