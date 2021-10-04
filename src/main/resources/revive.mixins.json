@@ -8,12 +8,12 @@
     "ServerPlayerEntityMixin",
     "ServerPlayNetworkHandlerMixin",
     "PlayerManagerMixin",
-    "LivingEntityAccessor",
-    "PlayerInventoryAccessor"
+    "LivingEntityAccessor"
   ],
   "client": [
     "client.DeathScreenMixin",
-    "client.ClientPlayerEntityMixin"
+    "client.ClientPlayerEntityMixin",
+    "client.MinecraftClientAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

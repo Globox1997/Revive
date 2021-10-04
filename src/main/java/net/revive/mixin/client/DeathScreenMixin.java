@@ -42,7 +42,6 @@ public abstract class DeathScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", shift = Shift.AFTER))
     protected void initMixin(CallbackInfo info) {
-        this.passEvents = true;
         if (!((PlayerEntityAccessor) this.client.player).getDeathReason())
             this.buttons.add((ButtonWidget) this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 4 + 120, 200, 20, new TranslatableText("text.deathScreen.revive"), (button) -> {
                 if (((PlayerEntityAccessor) this.client.player).canRevive() && (ReviveMain.CONFIG.timer == -1 || (ReviveMain.CONFIG.timer != -1 && ReviveMain.CONFIG.timer > this.ticksSinceDeath)))
@@ -71,5 +70,15 @@ public abstract class DeathScreenMixin extends Screen {
                         new TranslatableText("text.deathScreen.coordinates", this.client.player.getBlockX(), this.client.player.getBlockY(), this.client.player.getBlockZ()), this.width / 2,
                         this.height / 4 + 146 + (!((PlayerEntityAccessor) this.client.player).getDeathReason() ? 0 : -24), 16777215);
         }
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (this.client.options.keyChat.matchesKey(keyCode, scanCode)) {
+            ((MinecraftClientAccessor) this.client).callOpenChatScreen("");
+            return true;
+        } else
+            return super.keyPressed(keyCode, scanCode, modifiers);
+
     }
 }
