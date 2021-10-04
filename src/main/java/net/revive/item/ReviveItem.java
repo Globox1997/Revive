@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -37,11 +38,21 @@ public class ReviveItem extends Item {
                 ReviveServerPacket.writeS2CRevivablePacket((ServerPlayerEntity) playerEntity, true);
                 world.playSound(null, user.getBlockPos(), ReviveMain.REVIVE_SOUND_EVENT, SoundCategory.PLAYERS, 1.0F, 0.9F + world.random.nextFloat() * 0.2F);
                 itemStack.decrement(1);
-            } else {
-                for (int u = 0; u < 20; u++)
-                    world.addParticle(ParticleTypes.END_ROD, (double) playerEntity.getX() - 0.5D + world.random.nextFloat(), playerEntity.getRandomBodyY(),
-                            (double) playerEntity.getZ() - 0.5D + world.random.nextFloat(), 0.1D * world.random.nextFloat(), 0.3D * world.random.nextFloat(), 0.1D * world.random.nextFloat());
+                if (world instanceof ServerWorld) {
+                    for (int u = 0; u < 20; u++)
+                        // world.addParticle(ParticleTypes.END_ROD, (double) playerEntity.getX() - 0.5D + world.random.nextFloat(), playerEntity.getRandomBodyY(),
+                        // (double) playerEntity.getZ() - 0.5D + world.random.nextFloat(), 0.1D * world.random.nextFloat(), 0.3D * world.random.nextFloat(), 0.1D * world.random.nextFloat());
+
+                        ((ServerWorld) world).spawnParticles(ParticleTypes.END_ROD, (double) playerEntity.getX() - 0.5D + world.random.nextFloat(), playerEntity.getRandomBodyY(),
+                                (double) playerEntity.getZ() - 0.5D + world.random.nextFloat(), 0, 0.1D * world.random.nextFloat(), 0.3D * world.random.nextFloat(), 0.1D * world.random.nextFloat(),
+                                0.1D);
+                }
             }
+            // else {
+            // for (int u = 0; u < 20; u++)
+            // world.addParticle(ParticleTypes.END_ROD, (double) playerEntity.getX() - 0.5D + world.random.nextFloat(), playerEntity.getRandomBodyY(),
+            // (double) playerEntity.getZ() - 0.5D + world.random.nextFloat(), 0.1D * world.random.nextFloat(), 0.3D * world.random.nextFloat(), 0.1D * world.random.nextFloat());
+            // }
             return TypedActionResult.consume(itemStack);
         } else
             return TypedActionResult.fail(itemStack);
