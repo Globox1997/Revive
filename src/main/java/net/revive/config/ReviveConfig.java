@@ -17,6 +17,8 @@ public class ReviveConfig implements ConfigData {
     public boolean dropRandomOnExplosion = true;
     @Comment("Chance for each inventory item to drop")
     public float dropChance = 0.3F;
+    @Comment("Mainly for compatibility with RpgZ")
+    public boolean allowLootablePlayer = false;
     public int reviveHealthPoints = 2;
     public boolean showDeathCoordinates = true;
 

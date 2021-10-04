@@ -11,9 +11,14 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.revive.ReviveMain;
 import net.revive.accessor.PlayerEntityAccessor;
+import net.revive.handler.PlayerLootScreenHandler;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityAccessor {
@@ -48,6 +53,19 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
                 this.remove(Entity.RemovalReason.KILLED);
             }
         }
+    }
+
+    @Override
+    public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
+        PlayerEntity playerEntity = (PlayerEntity) (Object) this;
+        if (this.deathTime > 20 && ReviveMain.CONFIG.allowLootablePlayer && !playerEntity.getInventory().isEmpty()) {
+            if (!world.isClient) {
+                player.openHandledScreen(
+                        new SimpleNamedScreenHandlerFactory((syncId, inv, p) -> new PlayerLootScreenHandler(syncId, p.getInventory(), playerEntity.getInventory()), playerEntity.getName()));
+            }
+            return ActionResult.SUCCESS;
+        } else
+            return super.interactAt(player, hitPos, hand);
     }
 
     @Override
