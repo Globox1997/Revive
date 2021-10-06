@@ -7,6 +7,8 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 @Config(name = "revive")
 @Config.Gui.Background("minecraft:textures/block/stone.png")
 public class ReviveConfig implements ConfigData {
+
+    public float test = 60.0F;
     @Comment("Time in ticks: -1 disables timer")
     public int timer = -1;
     @Comment("Drops player loot directly")
@@ -21,6 +23,7 @@ public class ReviveConfig implements ConfigData {
     public boolean allowLootablePlayer = false;
     public int reviveHealthPoints = 2;
     public boolean showDeathCoordinates = true;
+    public boolean thirdPersonOnDeath = true;
 
     @Comment("Apply bad effects on revival")
     public boolean reviveEffects = true;

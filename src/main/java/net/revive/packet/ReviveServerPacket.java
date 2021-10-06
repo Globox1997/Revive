@@ -20,6 +20,7 @@ public class ReviveServerPacket {
     public static final Identifier REVIVE_SYNC_PACKET = new Identifier("revive", "revive_health");
     public static final Identifier DEATH_REASON_PACKET = new Identifier("revive", "death_reason");
     public static final Identifier REVIVABLE_PACKET = new Identifier("revive", "revivable");
+    public static final Identifier FIRST_PERSON_PACKET = new Identifier("revive", "first_person");
 
     public static void init() {
         ServerPlayNetworking.registerGlobalReceiver(REVIVE_PACKET, (server, player, handler, buffer, sender) -> {
@@ -62,6 +63,11 @@ public class ReviveServerPacket {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
         buf.writeBoolean(canRevive);
         CustomPayloadS2CPacket packet = new CustomPayloadS2CPacket(REVIVABLE_PACKET, buf);
+        serverPlayerEntity.networkHandler.sendPacket(packet);
+    }
+
+    public static void writeS2CFirstPersonPacket(ServerPlayerEntity serverPlayerEntity) {
+        CustomPayloadS2CPacket packet = new CustomPayloadS2CPacket(FIRST_PERSON_PACKET, new PacketByteBuf(Unpooled.buffer()));
         serverPlayerEntity.networkHandler.sendPacket(packet);
     }
 

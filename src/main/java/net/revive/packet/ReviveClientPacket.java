@@ -3,10 +3,12 @@ package net.revive.packet;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.Perspective;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.particle.ParticleTypes;
+import net.revive.ReviveMain;
 import net.revive.accessor.PlayerEntityAccessor;
 
 public class ReviveClientPacket {
@@ -17,6 +19,8 @@ public class ReviveClientPacket {
             int healthPoints = buf.readInt();
             client.execute(() -> {
                 if (client.player.getId() == entityId) {
+                    if (ReviveMain.CONFIG.thirdPersonOnDeath)
+                        client.options.setPerspective(Perspective.FIRST_PERSON);
                     ((PlayerEntityAccessor) client.player).setCanRevive(false);
                     client.player.setHealth(healthPoints);
                     client.currentScreen.onClose();
@@ -45,6 +49,11 @@ public class ReviveClientPacket {
                     client.world.addParticle(ParticleTypes.END_ROD, (double) client.player.getX() - 1.0D + client.world.random.nextFloat() * 2F, client.player.getRandomBodyY(),
                             (double) client.player.getZ() - 1.0D + client.world.random.nextFloat() * 2F, 0.0D, 0.2D, 0.0D);
                 ((PlayerEntityAccessor) client.player).setCanRevive(canRevive);
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(ReviveServerPacket.FIRST_PERSON_PACKET, (client, handler, buf, sender) -> {
+            client.execute(() -> {
+                client.options.setPerspective(Perspective.FIRST_PERSON);
             });
         });
     }

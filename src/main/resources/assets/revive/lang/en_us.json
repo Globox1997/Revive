@@ -12,6 +12,7 @@
     "text.autoconfig.revive.option.effectWeakness": "Weakness Effect Duration",
     "text.autoconfig.revive.option.showDeathCoordinates": "Show Death Coordinates",
     "text.autoconfig.revive.option.allowLootablePlayer": "Allow Lootable Player",
+    "text.autoconfig.revive.option.thirdPersonOnDeath": "Third Person On Death",
 
     "text.deathScreen.revive": "Revive",
     "text.deathScreen.timer": "Time: %d",
