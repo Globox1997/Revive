@@ -74,7 +74,7 @@ public abstract class DeathScreenMixin extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (this.client.options.keyChat.matchesKey(keyCode, scanCode)) {
+        if (this.client.options.chatKey.matchesKey(keyCode, scanCode)) {
             ((MinecraftClientAccessor) this.client).callOpenChatScreen("");
             return true;
         } else

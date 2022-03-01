@@ -23,7 +23,7 @@ public class ReviveClientPacket {
                         client.options.setPerspective(Perspective.FIRST_PERSON);
                     ((PlayerEntityAccessor) client.player).setCanRevive(false);
                     client.player.setHealth(healthPoints);
-                    client.currentScreen.onClose();
+                    client.currentScreen.close();
                     client.player.deathTime = 0;
                     client.player.hurtTime = 0;
                     client.player.extinguish();
