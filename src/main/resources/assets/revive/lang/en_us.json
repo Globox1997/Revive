@@ -13,6 +13,7 @@
     "text.autoconfig.revive.option.showDeathCoordinates": "Show Death Coordinates",
     "text.autoconfig.revive.option.allowLootablePlayer": "Allow Lootable Player",
     "text.autoconfig.revive.option.thirdPersonOnDeath": "Third Person On Death",
+    "text.autoconfig.revive.option.rotationSpeed": "Rotation Speed",
 
     "text.deathScreen.revive": "Revive",
     "text.deathScreen.timer": "Time: %d",
