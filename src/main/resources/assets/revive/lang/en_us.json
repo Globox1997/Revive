@@ -19,5 +19,5 @@
     "text.deathScreen.timer": "Time: %d",
     "text.deathScreen.coordinates": "Coordinates: %d, %d, %d",
 
-    "item.revive.revive_item": "Revival Star"
+    "item.revive.revival_star": "Revival Star"
 }

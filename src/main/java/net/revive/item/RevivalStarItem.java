@@ -11,14 +11,15 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 import net.revive.ReviveMain;
 import net.revive.accessor.PlayerEntityAccessor;
 import net.revive.packet.ReviveServerPacket;
 
-public class ReviveItem extends Item {
+public class RevivalStarItem extends Item {
 
-    public ReviveItem(Settings settings) {
+    public RevivalStarItem(Settings settings) {
         super(settings);
     }
 
@@ -27,6 +28,10 @@ public class ReviveItem extends Item {
         ItemStack itemStack = user.getStackInHand(hand);
         PlayerEntity playerEntity = null;
         List<? extends PlayerEntity> list = world.getPlayers();
+        System.out.println(user.raycast(2.5D, 1.0F, false));
+        if (user.raycast(2.5D, 1.0F, false) != null && user.raycast(2.5D, 1.0F, false).getType().equals(HitResult.Type.ENTITY))
+            System.out.println();
+
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getId() != user.getId() && list.get(i).isDead() && list.get(i).getBlockPos().isWithinDistance(user.getBlockPos(), 2.5D)) {
                 playerEntity = list.get(i);
