@@ -21,13 +21,13 @@ public class ReviveConfig implements ConfigData {
     @Comment("Mainly for compatibility with RpgZ")
     public boolean allowLootablePlayer = false;
     public int reviveHealthPoints = 2;
+    public int reviveSupportiveHealthPoints = 10;
     public boolean showDeathCoordinates = true;
     public boolean thirdPersonOnDeath = true;
     public float rotationSpeed = 0.4F;
 
-    @Comment("Apply bad effects on revival")
+    @Comment("Apply effects on revival")
     public boolean reviveEffects = true;
-    public int effectSlowness = 600;
-    public int effectHunger = 300;
-    public int effectWeakness = 900;
+    public int effectLivelyAftermath = 300;
+    public int effectAftermath = 600;
 }
