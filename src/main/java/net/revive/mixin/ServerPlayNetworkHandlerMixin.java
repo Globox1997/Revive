@@ -12,6 +12,7 @@ import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.revive.ReviveMain;
+import net.revive.mixin.accessor.LivingEntityAccessor;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin {

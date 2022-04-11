@@ -45,7 +45,7 @@ public abstract class DeathScreenMixin extends Screen {
         if (!((PlayerEntityAccessor) this.client.player).getDeathReason())
             this.buttons.add((ButtonWidget) this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 4 + 120, 200, 20, new TranslatableText("text.deathScreen.revive"), (button) -> {
                 if (((PlayerEntityAccessor) this.client.player).canRevive() && (ReviveMain.CONFIG.timer == -1 || (ReviveMain.CONFIG.timer != -1 && ReviveMain.CONFIG.timer > this.ticksSinceDeath)))
-                    ReviveClientPacket.writeC2SRevivePacket();
+                    ReviveClientPacket.writeC2SRevivePacket(((PlayerEntityAccessor) this.client.player).isSupportiveRevival());
             })));
     }
 

@@ -25,7 +25,7 @@ public class PlayerManagerMixin {
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))
     private void onPlayerConnectMixin(ClientConnection connection, ServerPlayerEntity player, CallbackInfo info) {
         ReviveServerPacket.writeS2CDeathReasonPacket(player, ((PlayerEntityAccessor) player).getDeathReason());
-        ReviveServerPacket.writeS2CRevivablePacket(player, ((PlayerEntityAccessor) player).canRevive());
+        ReviveServerPacket.writeS2CRevivablePacket(player, ((PlayerEntityAccessor) player).canRevive(), ((PlayerEntityAccessor) player).isSupportiveRevival());
     }
 
     @Inject(method = "respawnPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;setMainArm(Lnet/minecraft/util/Arm;)V"), locals = LocalCapture.CAPTURE_FAILSOFT)

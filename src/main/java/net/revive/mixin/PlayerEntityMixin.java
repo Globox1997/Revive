@@ -11,6 +11,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.potion.PotionUtil;
+import net.minecraft.potion.Potions;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -25,6 +27,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 
     private boolean isOutOfWorld = false;
     private boolean canRevive = false;
+    private boolean supportiveRevival = false;
 
     public PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -34,12 +37,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     public void readCustomDataFromNbtMixin(NbtCompound nbt, CallbackInfo info) {
         this.isOutOfWorld = nbt.getBoolean("IsOutOfWorld");
         this.canRevive = nbt.getBoolean("CanRevive");
+        this.supportiveRevival = nbt.getBoolean("SupportiveRevival");
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At(value = "TAIL"))
     public void writeCustomDataToNbtMixin(NbtCompound nbt, CallbackInfo info) {
         nbt.putBoolean("IsOutOfWorld", this.isOutOfWorld);
         nbt.putBoolean("CanRevive", this.canRevive);
+        nbt.putBoolean("SupportiveRevival", this.supportiveRevival);
     }
 
     @Override
@@ -57,9 +62,9 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-        PlayerEntity otherPlayerEntity = (PlayerEntity) (Object) this;
-        if (this.deathTime > 20 && ReviveMain.CONFIG.allowLootablePlayer) {
+        if (this.deathTime > 20 && ReviveMain.CONFIG.allowLootablePlayer && PotionUtil.getPotion(player.getMainHandStack()).equals(Potions.EMPTY)) {
             if (!world.isClient) {
+                PlayerEntity otherPlayerEntity = (PlayerEntity) (Object) this;
                 player.openHandledScreen(
                         new SimpleNamedScreenHandlerFactory((syncId, inv, p) -> new PlayerLootScreenHandler(syncId, inv, otherPlayerEntity.getInventory()), otherPlayerEntity.getName()));
             }
@@ -86,6 +91,16 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     @Override
     public boolean canRevive() {
         return this.canRevive;
+    }
+
+    @Override
+    public void setSupportiveRevival(boolean supportiveRevival) {
+        this.supportiveRevival = supportiveRevival;
+    }
+
+    @Override
+    public boolean isSupportiveRevival() {
+        return this.supportiveRevival;
     }
 
 }

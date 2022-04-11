@@ -5,7 +5,6 @@ import java.util.List;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
@@ -29,14 +28,19 @@ public class ReviveServerPacket {
                 player.deathTime = 0;
                 player.hurtTime = 0;
                 player.extinguish();
+
+                boolean isSupportiveRevival = buffer.readBoolean();
                 int healthPoints = ReviveMain.CONFIG.reviveHealthPoints;
+                if (isSupportiveRevival)
+                    healthPoints = ReviveMain.CONFIG.reviveSupportiveHealthPoints;
                 player.setHealth(healthPoints);
                 player.onSpawn();
 
                 if (ReviveMain.CONFIG.reviveEffects) {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, ReviveMain.CONFIG.effectSlowness, 1, false, false, true));
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, ReviveMain.CONFIG.effectHunger, 1, false, false, true));
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, ReviveMain.CONFIG.effectWeakness, 1, false, false, true));
+                    if (isSupportiveRevival)
+                        player.addStatusEffect(new StatusEffectInstance(ReviveMain.LIVELY_AFTERMATH_EFFECT, ReviveMain.CONFIG.effectLivelyAftermath, 0, false, false, true));
+                    else
+                        player.addStatusEffect(new StatusEffectInstance(ReviveMain.AFTERMATH_EFFECT, ReviveMain.CONFIG.effectAftermath, 0, false, false, true));
                 }
 
                 PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
@@ -58,10 +62,11 @@ public class ReviveServerPacket {
         serverPlayerEntity.networkHandler.sendPacket(packet);
     }
 
-    public static void writeS2CRevivablePacket(ServerPlayerEntity serverPlayerEntity, boolean canRevive) {
+    public static void writeS2CRevivablePacket(ServerPlayerEntity serverPlayerEntity, boolean canRevive, boolean isSupportiveRevival) {
         ((PlayerEntityAccessor) serverPlayerEntity).setCanRevive(canRevive);
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
         buf.writeBoolean(canRevive);
+        buf.writeBoolean(isSupportiveRevival);
         CustomPayloadS2CPacket packet = new CustomPayloadS2CPacket(REVIVABLE_PACKET, buf);
         serverPlayerEntity.networkHandler.sendPacket(packet);
     }

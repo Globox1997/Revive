@@ -44,11 +44,13 @@ public class ReviveClientPacket {
         });
         ClientPlayNetworking.registerGlobalReceiver(ReviveServerPacket.REVIVABLE_PACKET, (client, handler, buf, sender) -> {
             boolean canRevive = buf.readBoolean();
+            boolean isSupportiveRevival = buf.readBoolean();
             client.execute(() -> {
                 for (int u = 0; u < 30; u++)
                     client.world.addParticle(ParticleTypes.END_ROD, (double) client.player.getX() - 1.0D + client.world.random.nextFloat() * 2F, client.player.getRandomBodyY(),
                             (double) client.player.getZ() - 1.0D + client.world.random.nextFloat() * 2F, 0.0D, 0.2D, 0.0D);
                 ((PlayerEntityAccessor) client.player).setCanRevive(canRevive);
+                ((PlayerEntityAccessor) client.player).setSupportiveRevival(isSupportiveRevival);
             });
         });
         ClientPlayNetworking.registerGlobalReceiver(ReviveServerPacket.FIRST_PERSON_PACKET, (client, handler, buf, sender) -> {
@@ -58,8 +60,9 @@ public class ReviveClientPacket {
         });
     }
 
-    public static void writeC2SRevivePacket() {
+    public static void writeC2SRevivePacket(boolean supportiveRevival) {
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+        buf.writeBoolean(supportiveRevival);
         CustomPayloadC2SPacket packet = new CustomPayloadC2SPacket(ReviveServerPacket.REVIVE_PACKET, buf);
         MinecraftClient.getInstance().getNetworkHandler().sendPacket(packet);
     }

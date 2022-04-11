@@ -8,7 +8,9 @@
     "ServerPlayerEntityMixin",
     "ServerPlayNetworkHandlerMixin",
     "PlayerManagerMixin",
-    "LivingEntityAccessor"
+    "BrewingRecipeRegistryMixin",
+    "PotionItemMixin",
+    "accessor.LivingEntityAccessor"
   ],
   "client": [
     "client.DeathScreenMixin",
