@@ -28,7 +28,7 @@ public class PlayerManagerMixin {
         ReviveServerPacket.writeS2CRevivablePacket(player, ((PlayerEntityAccessor) player).canRevive(), ((PlayerEntityAccessor) player).isSupportiveRevival());
     }
 
-    @Inject(method = "respawnPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;setMainArm(Lnet/minecraft/util/Arm;)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
+    @Inject(method = "respawnPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;onPlayerRespawned(Lnet/minecraft/server/network/ServerPlayerEntity;)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
     private void respawnPlayerMixin(ServerPlayerEntity player, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> info, BlockPos blockPos, float f, boolean bl, ServerWorld serverWorld,
             Optional<Vec3d> optional2, ServerWorld serverWorld2, ServerPlayerEntity serverPlayerEntity) {
         if (ReviveMain.CONFIG.thirdPersonOnDeath)
