@@ -42,10 +42,10 @@ public abstract class DeathScreenMixin extends Screen {
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", shift = Shift.AFTER))
     protected void initMixin(CallbackInfo info) {
         if (!((PlayerEntityAccessor) this.client.player).getDeathReason())
-            this.buttons.add((ButtonWidget) this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 4 + 120, 200, 20, Text.translatable("text.deathScreen.revive"), (button) -> {
+            this.buttons.add((ButtonWidget) this.addDrawableChild(ButtonWidget.builder(Text.translatable("text.deathScreen.revive"), (button) -> {
                 if (((PlayerEntityAccessor) this.client.player).canRevive() && (ReviveMain.CONFIG.timer == -1 || (ReviveMain.CONFIG.timer != -1 && ReviveMain.CONFIG.timer > this.ticksSinceDeath)))
                     ReviveClientPacket.writeC2SRevivePacket(((PlayerEntityAccessor) this.client.player).isSupportiveRevival());
-            })));
+            }).dimensions(this.width / 2 - 100, this.height / 4 + 120, 200, 20).build()));
     }
 
     @Inject(method = "tick", at = @At(value = "TAIL"))

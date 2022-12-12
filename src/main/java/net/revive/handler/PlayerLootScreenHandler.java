@@ -8,6 +8,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 
 public class PlayerLootScreenHandler extends ScreenHandler {
+
     private final PlayerInventory lootablePlayerInventory;
 
     public PlayerLootScreenHandler(int syncId, PlayerInventory playerInventory, PlayerInventory otherPlayerInventory) {
@@ -27,36 +28,36 @@ public class PlayerLootScreenHandler extends ScreenHandler {
         // and mod compatibilities have to get done by hand here at canInsert
 
         // for (m = 0; m < 9; ++m) {
-        //     this.addSlot(new Slot(this.lootablePlayerInventory, m + 36, 8 + m * 18, 72) {
-        //         @Override
-        //         public boolean canInsert(ItemStack stack) {
-        //             System.out.println(this.getIndex());
-        //             if (lootablePlayerInventory.size() <= this.getIndex())
-        //                 return false;
-        //             else if (this.getIndex() >= 36 && this.getIndex() < 40 && !(stack.getItem() instanceof ArmorItem)
-        //                     || (stack.getItem() instanceof ArmorItem && !canInsertArmorStack(stack, this.getIndex())))
-        //                 return false;
-        //             else if ((this.getIndex() == 41 || this.getIndex() == 42) && !(stack.getItem() instanceof SwordItem))
-        //                 return false;
-        //             else
-        //                 return true;
-        //         }
+        // this.addSlot(new Slot(this.lootablePlayerInventory, m + 36, 8 + m * 18, 72) {
+        // @Override
+        // public boolean canInsert(ItemStack stack) {
+        // System.out.println(this.getIndex());
+        // if (lootablePlayerInventory.size() <= this.getIndex())
+        // return false;
+        // else if (this.getIndex() >= 36 && this.getIndex() < 40 && !(stack.getItem() instanceof ArmorItem)
+        // || (stack.getItem() instanceof ArmorItem && !canInsertArmorStack(stack, this.getIndex())))
+        // return false;
+        // else if ((this.getIndex() == 41 || this.getIndex() == 42) && !(stack.getItem() instanceof SwordItem))
+        // return false;
+        // else
+        // return true;
+        // }
 
-        //         @Override
-        //         public boolean isEnabled() {
-        //             if (lootablePlayerInventory.size() <= this.getIndex()) {
-        //                 System.out.println("Not enabled");
-        //                 return false;
-        //             } else
-        //                 return true;
-        //         }
+        // @Override
+        // public boolean isEnabled() {
+        // if (lootablePlayerInventory.size() <= this.getIndex()) {
+        // System.out.println("Not enabled");
+        // return false;
+        // } else
+        // return true;
+        // }
 
-        //         @Override
-        //         public boolean canTakeItems(PlayerEntity playerEntity) {
-        //             ItemStack itemStack = this.getStack();
-        //             return !itemStack.isEmpty() && EnchantmentHelper.hasBindingCurse(itemStack) ? false : super.canTakeItems(playerEntity);
-        //         }
-        //     });
+        // @Override
+        // public boolean canTakeItems(PlayerEntity playerEntity) {
+        // ItemStack itemStack = this.getStack();
+        // return !itemStack.isEmpty() && EnchantmentHelper.hasBindingCurse(itemStack) ? false : super.canTakeItems(playerEntity);
+        // }
+        // });
         // }
 
         for (m = 0; m < 3; ++m) {
@@ -71,18 +72,18 @@ public class PlayerLootScreenHandler extends ScreenHandler {
     }
 
     // private boolean canInsertArmorStack(ItemStack stack, int slot) {
-    //     switch (slot) {
-    //         case 36:
-    //             return MobEntity.getPreferredEquipmentSlot(stack) == EquipmentSlot.FEET;
-    //         case 37:
-    //             return MobEntity.getPreferredEquipmentSlot(stack) == EquipmentSlot.LEGS;
-    //         case 38:
-    //             return MobEntity.getPreferredEquipmentSlot(stack) == EquipmentSlot.CHEST;
-    //         case 39:
-    //             return MobEntity.getPreferredEquipmentSlot(stack) == EquipmentSlot.HEAD;
-    //         default:
-    //             return false;
-    //     }
+    // switch (slot) {
+    // case 36:
+    // return MobEntity.getPreferredEquipmentSlot(stack) == EquipmentSlot.FEET;
+    // case 37:
+    // return MobEntity.getPreferredEquipmentSlot(stack) == EquipmentSlot.LEGS;
+    // case 38:
+    // return MobEntity.getPreferredEquipmentSlot(stack) == EquipmentSlot.CHEST;
+    // case 39:
+    // return MobEntity.getPreferredEquipmentSlot(stack) == EquipmentSlot.HEAD;
+    // default:
+    // return false;
+    // }
     // }
 
     @Override
@@ -91,7 +92,7 @@ public class PlayerLootScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int index) {
+    public ItemStack quickMove(PlayerEntity player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = (Slot) this.slots.get(index);
         if (slot != null && slot.hasStack()) {

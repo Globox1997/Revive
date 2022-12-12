@@ -30,6 +30,10 @@ dependencies {
 	modCompileOnly modRuntimeOnly("com.terraformersmc:modmenu:${project.mod_menu_version}"),{
 		exclude(group: "net.fabricmc.fabric-api")
 	}
+	// REI
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:10.0.578"
+    // EMI
+    modCompileOnly "dev.emi:emi:0.5.0+1.19.3"
 }
 
 processResources {

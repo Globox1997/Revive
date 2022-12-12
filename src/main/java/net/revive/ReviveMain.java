@@ -3,6 +3,7 @@ package net.revive;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -10,13 +11,14 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.VillagerProfession;
 import net.revive.config.ReviveConfig;
@@ -26,10 +28,10 @@ import net.revive.packet.ReviveServerPacket;
 public class ReviveMain implements ModInitializer {
 
     public static ReviveConfig CONFIG = new ReviveConfig();
-    public static final Item REVIVE_ITEM = new Item(new Item.Settings().group(ItemGroup.MISC));
+    public static final Item REVIVE_ITEM = new Item(new Item.Settings());
 
     public static final Identifier REVIVE_SOUND = new Identifier("revive:revive");
-    public static SoundEvent REVIVE_SOUND_EVENT = new SoundEvent(REVIVE_SOUND);
+    public static SoundEvent REVIVE_SOUND_EVENT = SoundEvent.of(REVIVE_SOUND);
 
     public static final StatusEffect AFTERMATH_EFFECT = new AftermathEffect(StatusEffectCategory.HARMFUL, 11838975)
             .addAttributeModifier(EntityAttributes.GENERIC_MOVEMENT_SPEED, "66462626-74d7-42db-858f-2419f1fd711a", -0.30F, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
@@ -45,15 +47,16 @@ public class ReviveMain implements ModInitializer {
         AutoConfig.register(ReviveConfig.class, JanksonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(ReviveConfig.class).getConfig();
         ReviveServerPacket.init();
-        Registry.register(Registry.ITEM, new Identifier("revive", "revival_star"), REVIVE_ITEM);
+        Registry.register(Registries.ITEM, new Identifier("revive", "revival_star"), REVIVE_ITEM);
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> entries.add(REVIVE_ITEM));
         TradeOfferHelper.registerVillagerOffers(VillagerProfession.CLERIC, 1, (factories -> {
             factories.add((entity, random) -> new TradeOffer(new ItemStack(Items.EMERALD, 28), new ItemStack(REVIVE_ITEM), 4, 1, 0.4F));
         }));
-        Registry.register(Registry.SOUND_EVENT, REVIVE_SOUND, REVIVE_SOUND_EVENT);
-        Registry.register(Registry.STATUS_EFFECT, "revive:aftermath", AFTERMATH_EFFECT);
-        Registry.register(Registry.STATUS_EFFECT, "revive:lively_aftermath", LIVELY_AFTERMATH_EFFECT);
-        Registry.register(Registry.POTION, "revivify_potion", REVIVIFY_POTION);
-        Registry.register(Registry.POTION, "supportive_revivify_potion", SUPPORTIVE_REVIVIFY_POTION);
+        Registry.register(Registries.SOUND_EVENT, REVIVE_SOUND, REVIVE_SOUND_EVENT);
+        Registry.register(Registries.STATUS_EFFECT, "revive:aftermath", AFTERMATH_EFFECT);
+        Registry.register(Registries.STATUS_EFFECT, "revive:lively_aftermath", LIVELY_AFTERMATH_EFFECT);
+        Registry.register(Registries.POTION, "revivify_potion", REVIVIFY_POTION);
+        Registry.register(Registries.POTION, "supportive_revivify_potion", SUPPORTIVE_REVIVIFY_POTION);
     }
 
 }
