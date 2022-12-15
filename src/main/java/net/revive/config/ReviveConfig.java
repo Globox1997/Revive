@@ -20,6 +20,8 @@ public class ReviveConfig implements ConfigData {
     public float dropChance = 0.3F;
     @Comment("Mainly for compatibility with RpgZ")
     public boolean allowLootablePlayer = false;
+    @Comment("Revive without a potion")
+    public boolean allowReviveWithHand = false;
     public int reviveHealthPoints = 2;
     public int reviveSupportiveHealthPoints = 10;
     public boolean showDeathCoordinates = true;

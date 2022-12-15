@@ -14,7 +14,7 @@
     "text.autoconfig.revive.option.allowLootablePlayer": "Allow Lootable Player",
     "text.autoconfig.revive.option.thirdPersonOnDeath": "Third Person On Death",
     "text.autoconfig.revive.option.rotationSpeed": "Rotation Speed",
-
+    "text.autoconfig.revive.option.allowReviveWithHand": "Allow Revive With Hand",
 
     "text.deathScreen.revive": "Revive",
     "text.deathScreen.timer": "Time: %d",
