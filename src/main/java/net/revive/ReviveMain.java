@@ -5,6 +5,8 @@ import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
@@ -17,15 +19,21 @@ import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.VillagerProfession;
 import net.revive.config.ReviveConfig;
 import net.revive.effect.*;
+import net.revive.gui.DeadPlayerScreenHandler;
 import net.revive.packet.ReviveServerPacket;
 
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
+
 public class ReviveMain implements ModInitializer {
+
+    public static final boolean isBackSlotLoaded = FabricLoader.getInstance().isModLoaded("backslot");
 
     public static ReviveConfig CONFIG = new ReviveConfig();
     public static final Item REVIVE_ITEM = new Item(new Item.Settings());
@@ -42,6 +50,8 @@ public class ReviveMain implements ModInitializer {
     public static final Potion REVIVIFY_POTION = new Potion(new StatusEffectInstance(AFTERMATH_EFFECT, 600));
     public static final Potion SUPPORTIVE_REVIVIFY_POTION = new Potion(new StatusEffectInstance(LIVELY_AFTERMATH_EFFECT, 600));
 
+    public static final ScreenHandlerType<DeadPlayerScreenHandler> DEAD_PLAYER = new ExtendedScreenHandlerType<>(DeadPlayerScreenHandler::new);
+
     @Override
     public void onInitialize() {
         AutoConfig.register(ReviveConfig.class, JanksonConfigSerializer::new);
@@ -57,6 +67,7 @@ public class ReviveMain implements ModInitializer {
         Registry.register(Registries.STATUS_EFFECT, "revive:lively_aftermath", LIVELY_AFTERMATH_EFFECT);
         Registry.register(Registries.POTION, "revivify_potion", REVIVIFY_POTION);
         Registry.register(Registries.POTION, "supportive_revivify_potion", SUPPORTIVE_REVIVIFY_POTION);
+        // Registry.register(Registries.SCREEN_HANDLER, "revive:dead_player_inventory", DEAD_PLAYER);
     }
 
 }

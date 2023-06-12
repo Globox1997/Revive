@@ -74,6 +74,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
                 } else if (ReviveMain.CONFIG.allowLootablePlayer) {
                     player.openHandledScreen(
                             new SimpleNamedScreenHandlerFactory((syncId, inv, p) -> new PlayerLootScreenHandler(syncId, inv, otherPlayerEntity.getInventory()), otherPlayerEntity.getName()));
+                    // player.openHandledScreen(
+                    // new SimpleNamedScreenHandlerFactory((syncId, inv, p) -> new DeadPlayerScreenHandler(syncId, inv, otherPlayerEntity.getInventory()), otherPlayerEntity.getName()));
                 }
             }
             return ActionResult.SUCCESS;
