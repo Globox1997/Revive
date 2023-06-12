@@ -10,5 +10,5 @@ import net.minecraft.entity.damage.DamageSource;
 public interface LivingEntityAccessor {
 
     @Invoker("drop")
-    void dropInvoker(DamageSource source);
+    void callDrop(DamageSource source);
 }

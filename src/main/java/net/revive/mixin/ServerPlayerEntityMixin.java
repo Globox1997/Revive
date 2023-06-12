@@ -27,14 +27,14 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
     @Inject(method = "onDeath", at = @At(value = "HEAD"))
     private void onDeathMixin(DamageSource source, CallbackInfo info) {
-        ReviveServerPacket.writeS2CDeathReasonPacket((ServerPlayerEntity) (Object) this, source.equals(DamageSource.OUT_OF_WORLD));
+        ReviveServerPacket.writeS2CDeathReasonPacket((ServerPlayerEntity) (Object) this, source.equals(((ServerPlayerEntity) (Object) this).getDamageSources().outOfWorld()));
     }
 
     @Redirect(method = "onDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;drop(Lnet/minecraft/entity/damage/DamageSource;)V"))
     private void onDeathRedirectMixin(ServerPlayerEntity serverPlayerEntity, DamageSource damageSource) {
-        if (ReviveMain.CONFIG.dropLoot)
+        if (ReviveMain.CONFIG.dropLoot) {
             this.drop(damageSource);
-        else if ((ReviveMain.CONFIG.dropRandomOnExplosion && damageSource.isExplosive()) || ReviveMain.CONFIG.dropRandom) {
+        } else if ((ReviveMain.CONFIG.dropRandomOnExplosion && damageSource.equals(((ServerPlayerEntity) (Object) this).getDamageSources().explosion(null))) || ReviveMain.CONFIG.dropRandom) {
             for (int i = 0; i < this.getInventory().size(); ++i) {
                 ItemStack itemStack = this.getInventory().getStack(i);
                 if (!itemStack.isEmpty() && this.random.nextFloat() < ReviveMain.CONFIG.dropChance) {

@@ -15,10 +15,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvType;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.DeathScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.revive.ReviveMain;
 import net.revive.accessor.PlayerEntityAccessor;
@@ -58,16 +58,19 @@ public abstract class DeathScreenMixin extends Screen {
 
     }
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/DeathScreen;drawCenteredText(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)V", ordinal = 2))
-    private void renderMixin(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo info) {
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawCenteredTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)V", ordinal = 2))
+    private void renderMixin(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo info) {
         if (this.client.player != null) {
-            if (ReviveMain.CONFIG.timer != -1 && ReviveMain.CONFIG.timer >= this.ticksSinceDeath && !((PlayerEntityAccessor) this.client.player).getDeathReason())
-                drawCenteredText(matrices, this.textRenderer, Text.translatable("text.deathScreen.timer", (ReviveMain.CONFIG.timer - this.ticksSinceDeath) / 20), this.width / 2, 115, 16777215);
+            if (ReviveMain.CONFIG.timer != -1 && ReviveMain.CONFIG.timer >= this.ticksSinceDeath && !((PlayerEntityAccessor) this.client.player).getDeathReason()) {
+                context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("text.deathScreen.timer", (ReviveMain.CONFIG.timer - this.ticksSinceDeath) / 20), this.width / 2, 115,
+                        16777215);
+            }
             // Coordinates
-            if (ReviveMain.CONFIG.showDeathCoordinates)
-                drawCenteredText(matrices, this.textRenderer,
+            if (ReviveMain.CONFIG.showDeathCoordinates) {
+                context.drawCenteredTextWithShadow(this.textRenderer,
                         Text.translatable("text.deathScreen.coordinates", this.client.player.getBlockX(), this.client.player.getBlockY(), this.client.player.getBlockZ()), this.width / 2,
                         this.height / 4 + 146 + (!((PlayerEntityAccessor) this.client.player).getDeathReason() ? 0 : -24), 16777215);
+            }
         }
     }
 
@@ -76,8 +79,8 @@ public abstract class DeathScreenMixin extends Screen {
         if (this.client.options.chatKey.matchesKey(keyCode, scanCode)) {
             ((MinecraftClientAccessor) this.client).callOpenChatScreen("");
             return true;
-        } else
+        } else {
             return super.keyPressed(keyCode, scanCode, modifiers);
-
+        }
     }
 }

@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.potion.PotionUtil;
@@ -53,11 +52,12 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     @Override
     protected void updatePostDeath() {
         ++this.deathTime;
-        if (!this.world.isClient) {
+        if (!this.getWorld().isClient()) {
             if (ReviveMain.CONFIG.timer != -1 && ReviveMain.CONFIG.timer < this.deathTime) {
-                if (!ReviveMain.CONFIG.dropLoot)
-                    this.drop(DamageSource.GENERIC);
-                this.world.sendEntityStatus(this, (byte) 60);
+                if (!ReviveMain.CONFIG.dropLoot) {
+                    this.drop(this.getDamageSources().generic());
+                }
+                this.getWorld().sendEntityStatus(this, (byte) 60);
                 this.remove(Entity.RemovalReason.KILLED);
             }
         }
@@ -66,11 +66,12 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
         if (this.deathTime > 20 && (ReviveMain.CONFIG.allowLootablePlayer || ReviveMain.CONFIG.allowReviveWithHand) && PotionUtil.getPotion(player.getMainHandStack()).equals(Potions.EMPTY)) {
-            if (!world.isClient) {
+            if (!this.getWorld().isClient()) {
                 PlayerEntity otherPlayerEntity = (PlayerEntity) (Object) this;
                 if (ReviveMain.CONFIG.allowReviveWithHand && player.isSneaking()) {
                     ReviveServerPacket.writeS2CRevivablePacket((ServerPlayerEntity) otherPlayerEntity, true, false);
-                    world.playSound(null, otherPlayerEntity.getBlockPos(), ReviveMain.REVIVE_SOUND_EVENT, SoundCategory.PLAYERS, 1.0F, 0.9F + world.random.nextFloat() * 0.2F);
+                    this.getWorld().playSound(null, otherPlayerEntity.getBlockPos(), ReviveMain.REVIVE_SOUND_EVENT, SoundCategory.PLAYERS, 1.0F,
+                            0.9F + this.getWorld().getRandom().nextFloat() * 0.2F);
                 } else if (ReviveMain.CONFIG.allowLootablePlayer) {
                     player.openHandledScreen(
                             new SimpleNamedScreenHandlerFactory((syncId, inv, p) -> new PlayerLootScreenHandler(syncId, inv, otherPlayerEntity.getInventory()), otherPlayerEntity.getName()));

@@ -20,16 +20,16 @@ public class LivelyAftermathEffect extends StatusEffect {
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         super.applyUpdateEffect(entity, amplifier);
-        if (!entity.world.isClient && entity instanceof PlayerEntity)
+        if (!entity.getWorld().isClient() && entity instanceof PlayerEntity)
             ((PlayerEntity) entity).getHungerManager().add(amplifier + 1, 1.0f);
     }
 
     @Override
     public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
         super.onApplied(entity, attributes, amplifier);
-        if (!entity.world.isClient && entity.isDead() && entity instanceof PlayerEntity && !((PlayerEntityAccessor) entity).canRevive()) {
+        if (!entity.getWorld().isClient() && entity.isDead() && entity instanceof PlayerEntity && !((PlayerEntityAccessor) entity).canRevive()) {
             ReviveServerPacket.writeS2CRevivablePacket((ServerPlayerEntity) entity, true, true);
-            entity.world.playSound(null, entity.getBlockPos(), ReviveMain.REVIVE_SOUND_EVENT, SoundCategory.PLAYERS, 1.0F, 0.9F + entity.world.random.nextFloat() * 0.2F);
+            entity.getWorld().playSound(null, entity.getBlockPos(), ReviveMain.REVIVE_SOUND_EVENT, SoundCategory.PLAYERS, 1.0F, 0.9F + entity.getWorld().getRandom().nextFloat() * 0.2F);
         }
     }
 

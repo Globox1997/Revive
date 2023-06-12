@@ -47,7 +47,7 @@ public class ReviveServerPacket {
                 buf.writeInt(player.getId());
                 buf.writeInt(healthPoints);
                 CustomPayloadS2CPacket packet = new CustomPayloadS2CPacket(REVIVE_SYNC_PACKET, buf);
-                List<? extends PlayerEntity> list = player.world.getPlayers();
+                List<? extends PlayerEntity> list = player.getWorld().getPlayers();
                 for (int i = 0; i < list.size(); i++)
                     ((ServerPlayerEntity) list.get(i)).networkHandler.sendPacket(packet);
             }
