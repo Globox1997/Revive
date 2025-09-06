@@ -1,36 +1,41 @@
 {
-    "text.autoconfig.revive.title": "复活配置",
-    "text.autoconfig.revive.option.timer": "计时器",
-    "text.autoconfig.revive.option.dropLoot": "掉落物品",
-    "text.autoconfig.revive.option.dropRandom": "随机掉落物品",
-    "text.autoconfig.revive.option.dropRandomOnExplosion": "爆炸时随机掉落物品",
-    "text.autoconfig.revive.option.dropChance": "爆炸时掉落物品几率",
-    "text.autoconfig.revive.option.reviveHealthPoints": "复活后生命值",
-    "text.autoconfig.revive.option.reviveSupportiveHealthPoints": "辅助复活后生命值",
-    "text.autoconfig.revive.option.reviveEffects": "复活状态效果",
-    "text.autoconfig.revive.option.effectLivelyAftermath": "大难不死 效果持续时间",
-    "text.autoconfig.revive.option.effectAftermath": "劫后余生 效果持续时间",
-    "text.autoconfig.revive.option.showDeathCoordinates": "显示死亡坐标",
-    "text.autoconfig.revive.option.allowLootablePlayer": "允许其他玩家掠夺",
-    "text.autoconfig.revive.option.thirdPersonOnDeath": "第三人称死亡视角",
-    "text.autoconfig.revive.option.rotationSpeed": "视角旋转速度",
-    "text.autoconfig.revive.option.allowReviveWithHand": "允许用手复活",
+  "text.autoconfig.revive.title": "复活配置"
+  "text.autoconfig.revive.option.timer": "计时器"
+  "text.autoconfig.revive.option.dropLoot": "掉落物品"
+  "text.autoconfig.revive.option.dropRandom": "随机掉落物品"
+  "text.autoconfig.revive.option.dropRandomOnExplosion": "爆炸时随机掉落物品"
+  "text.autoconfig.revive.option.dropChance": "爆炸时掉落物品概率"
+  "text.autoconfig.revive.option.reviveHealthPoints": "复活后生命值"
+  "text.autoconfig.revive.option.reviveSupportiveHealthPoints": "支援复活后生命值"
+  "text.autoconfig.revive.option.reviveEffects": "复活状态效果"
+  "text.autoconfig.revive.option.effectLivelyAftermath": "大难不死 效果持续时间"
+  "text.autoconfig.revive.option.effectAftermath": "劫后余生 效果持续时间"
+  "text.autoconfig.revive.option.showDeathCoordinates": "显示死亡坐标"
+  "text.autoconfig.revive.option.allowLootablePlayer": "允许其他玩家掠夺"
+  "text.autoconfig.revive.option.thirdPersonOnDeath": "第三人称死亡视角"
+  "text.autoconfig.revive.option.rotationSpeed": "视角旋转速度"
+  "text.autoconfig.revive.option.allowReviveWithHand": "允许直接徒手复活"
+  "text.autoconfig.revive.option.allowReviveWithHandTime": "徒手复活计时器"
+  "text.autoconfig.revive.option.automaticRevive": "自动复活"
 
-    "text.deathScreen.revive": "复活",
-    "text.deathScreen.timer": "时间： %d",
-    "text.deathScreen.coordinates": "坐标：%d，%d，%d",
+  "text.deathScreen.revive": "复活"
+  "text.deathScreen.timer": "时间： %d"
+  "text.deathScreen.coordinates": "坐标：%d，%d，%d"
 
-    "item.revive.revival_star": "复活之星",
+  "text.revive.info": "空闲主手 + 潜行键 + 长按使用（交互）键"
 
-    "item.minecraft.potion.effect.revivify_potion": "复活药水",
-    "item.minecraft.splash_potion.effect.revivify_potion": "喷溅型复活药水",
-    "item.minecraft.lingering_potion.effect.revivify_potion": "滞留型复活药水",
-    "item.minecraft.potion.effect.supportive_revivify_potion": "支援复活药水",
-    "item.minecraft.splash_potion.effect.supportive_revivify_potion": "喷溅型支援复活药水",
-    "item.minecraft.lingering_potion.effect.supportive_revivify_potion": "滞留型支援复活药水",
+  "item.revive.revival_star": "复活之星"
 
-    "item.minecraft.tipped_arrow.effect.revivify_potion": "复活之箭",
-    "item.minecraft.tipped_arrow.effect.supportive_revivify_potion": "支援复活之箭",
-    "effect.revive.aftermath": "劫后余生",
-    "effect.revive.lively_aftermath": "大难不死"
+  "item.minecraft.potion.effect.revivify_potion": "复活药水"
+  "item.minecraft.splash_potion.effect.revivify_potion": "喷溅型复活药水"
+  "item.minecraft.lingering_potion.effect.revivify_potion": "滞留型复活药水"
+  "item.minecraft.potion.effect.supportive_revivify_potion": "支援复活药水"
+  "item.minecraft.splash_potion.effect.supportive_revivify_potion": "喷溅型支援复活药水"
+  "item.minecraft.lingering_potion.effect.supportive_revivify_potion": "滞留型支援复活药水"
+
+  "item.minecraft.tipped_arrow.effect.revivify_potion": "复活之箭"
+  "item.minecraft.tipped_arrow.effect.supportive_revivify_potion": "支援复活之箭"
+  "effect.revive.aftermath": "劫后余生"
+  "effect.revive.lively_aftermath": "大难不死"
+
 }
