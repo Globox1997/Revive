@@ -4,19 +4,20 @@
   "package": "net.revive.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "LivingEntityMixin",
     "PlayerEntityMixin",
+    "PotionItemMixin",
     "ServerPlayerEntityMixin",
     "ServerPlayNetworkHandlerMixin",
-    "PotionItemMixin",
     "accessor.LivingEntityAccessor"
   ],
   "client": [
-    "client.DeathScreenMixin",
-    "client.ClientPlayerEntityMixin",
-    "client.MinecraftClientAccessor",
     "client.CameraMixin",
     "client.ChatScreenMixin",
-    "client.GenericContainerScreenMixin"
+    "client.ClientPlayerEntityMixin",
+    "client.DeathScreenMixin",
+    "client.GenericContainerScreenMixin",
+    "client.MinecraftClientAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
