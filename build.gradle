@@ -33,7 +33,7 @@ dependencies {
 	// REI
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:15.0.728"
     // EMI
-    modCompileOnly "dev.emi:emi-fabric:1.1.6+1.20.6"
+    modCompileOnly "dev.emi:emi-fabric:1.1.24+1.21.1"
 }
 
 processResources {
