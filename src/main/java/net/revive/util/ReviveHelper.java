@@ -52,11 +52,9 @@ public class ReviveHelper {
         ServerPlayNetworking.send(serverPlayerEntity, new RevivablePacket(canRevive, outOfWorld, supportiveRevival));
 
         List<? extends PlayerEntity> list = serverPlayerEntity.getWorld().getPlayers();
-        System.out.println("SSS "+list);
 
         for (PlayerEntity playerEntity : list) {
             if (playerEntity.isPlayer() && !playerEntity.getUuid().equals(serverPlayerEntity.getUuid())) {
-                System.out.println("SEND "+playerEntity);
                 ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new RevivableSyncPacket(serverPlayerEntity.getId(), canRevive));
             }
         }

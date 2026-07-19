@@ -1,6 +1,6 @@
 ### Added:
 - 
 ### Fixed:
-- Fixed revive mechanic
+- Fixed revive button
 ### Changed:
 - 
